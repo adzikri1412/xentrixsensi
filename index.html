@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>XENTRIX | Ultimate Gaming Precision</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Custom CSS akan ditambahkan di style.css */
+    </style>
+</head>
+<body class="bg-[#020617] text-slate-100 overflow-x-hidden">
+
+    <canvas id="particleCanvas" class="fixed inset-0 -z-10"></canvas>
+    <canvas id="mouseTrailCanvas" class="fixed inset-0 -z-10 pointer-events-none"></canvas>
+
+    <!-- Enhanced Loading Screen -->
+    <div id="loader" class="fixed inset-0 z-[100] bg-[#020617] flex flex-col items-center justify-center transition-all duration-700">
+        <div class="relative mb-8">
+            <div class="absolute inset-0 bg-gradient-to-r from-sky-500/20 via-blue-500/20 to-cyan-500/20 rounded-full blur-2xl animate-pulse"></div>
+            <div class="relative w-24 h-24 md:w-28 md:h-28 flex items-center justify-center">
+                <div class="absolute w-full h-full border-4 border-sky-900/20 rounded-full"></div>
+                <div class="absolute w-full h-full border-4 border-sky-500 border-t-transparent rounded-full animate-spin"></div>
+                <div class="absolute w-3/4 h-3/4 border-4 border-blue-500/30 border-b-transparent rounded-full animate-spin-slow"></div>
+                <div class="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-sky-500 to-blue-600 rounded-full flex items-center justify-center shadow-2xl shadow-sky-500/30">
+                    <i class="fas fa-bolt text-white text-2xl md:text-3xl animate-pulse"></i>
+                </div>
+            </div>
+            <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 w-40 h-1 bg-gradient-to-r from-transparent via-sky-500 to-transparent rounded-full blur-sm"></div>
+        </div>
+        
+        <div class="text-center">
+            <h2 class="text-2xl md:text-3xl font-black tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-cyan-400 uppercase font-jakarta mb-2">
+                XENTRIXSENSI
+            </h2>
+            <p class="text-slate-400 text-sm md:text-base tracking-widest uppercase font-bold mb-6">
+                Loading Ultimate Experience
+            </p>
+            <div class="w-48 h-1 bg-slate-800 rounded-full overflow-hidden mx-auto">
+                <div id="loadingBar" class="h-full bg-gradient-to-r from-sky-500 to-blue-500 w-0 transition-all duration-1000 ease-out rounded-full"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Animated Navigation -->
+    <nav id="mainNav" class="fixed top-0 w-full z-50 glass-nav transform -translate-y-full transition-transform duration-500">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2 md:gap-3 group cursor-pointer" onclick="scrollToTop()">
+                <div class="relative w-10 h-10 md:w-11 md:h-11 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:rotate-6">
+                    <div class="absolute inset-0 animate-logo-box rounded-xl blur-[2px] opacity-70"></div>
+                    <div class="absolute -inset-1 bg-gradient-to-r from-sky-500 to-blue-600 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
+                    <div class="relative w-full h-full bg-[#020617] rounded-xl flex items-center justify-center border border-white/10 overflow-hidden shadow-2xl">
+                        <img src="assets/logo.png" 
+                             alt="Logo" 
+                             class="w-full h-full object-cover" 
+                             onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=X&background=0ea5e9&color=fff&bold=true'">
+                    </div>
+                    <div class="absolute -top-0.5 -right-0.5 w-2 h-2 bg-sky-400 rounded-full border-2 border-[#020617] z-10 animate-ping"></div>
+                </div>
+                <span class="text-xl md:text-2xl font-black italic tracking-tighter uppercase transition-all duration-300 group-hover:text-sky-300">XENTRIX<span class="text-sky-500 group-hover:text-white">SENSI</span></span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="#" onclick="scrollToSection('products')" class="hidden md:inline-block text-xs font-bold text-slate-400 hover:text-sky-400 transition-all duration-300 uppercase tracking-widest px-4 py-2 rounded-full hover:bg-white/5">Products</a>
+                <a href="#" onclick="scrollToSection('about-us')" class="hidden md:inline-block text-xs font-bold text-slate-400 hover:text-sky-400 transition-all duration-300 uppercase tracking-widest px-4 py-2 rounded-full hover:bg-white/5">About</a>
+                <a href="#" onclick="scrollToSection('contact-us')" class="text-xs font-bold text-slate-400 hover:text-white transition-all duration-300 uppercase tracking-widest px-4 py-2 rounded-full hover:bg-white/5">Contact</a>
+                <button id="mobileMenuBtn" class="md:hidden text-slate-400 hover:text-white text-xl">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="md:hidden absolute top-full left-0 w-full bg-[#0a0f1e] border-t border-white/5 py-4 px-6 transform translate-y-[-100%] opacity-0 transition-all duration-300">
+            <div class="flex flex-col gap-4">
+                <a href="#" onclick="scrollToSection('products')" class="text-slate-400 hover:text-sky-400 py-2 font-bold uppercase tracking-widest text-sm transition-all duration-300">Products</a>
+                <a href="#" onclick="scrollToSection('about-us')" class="text-slate-400 hover:text-sky-400 py-2 font-bold uppercase tracking-widest text-sm transition-all duration-300">About</a>
+                <a href="#" onclick="scrollToSection('our-team')" class="text-slate-400 hover:text-sky-400 py-2 font-bold uppercase tracking-widest text-sm transition-all duration-300">Team</a>
+                <a href="#" onclick="scrollToSection('contact-us')" class="text-slate-400 hover:text-sky-400 py-2 font-bold uppercase tracking-widest text-sm transition-all duration-300">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative min-h-screen flex flex-col items-center justify-center text-center px-4 md:px-6 pt-20">
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-sky-500/10 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div class="central-glow-logo mb-8 transform scale-0 animate-logo-pop">
+            <div class="logo-inner">
+                <i class="fas fa-bolt text-4xl text-sky-400"></i>
+            </div>
+        </div>
+        
+        <h1 class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-400 to-cyan-400 text-5xl md:text-7xl lg:text-8xl font-extrabold mb-4 italic tracking-tight uppercase transform translate-y-10 opacity-0 animate-text-reveal">
+            XENTRIX Settings
+        </h1>
+        
+        <h3 class="text-white text-2xl md:text-4xl lg:text-5xl font-bold mb-8 uppercase leading-tight transform translate-y-10 opacity-0 animate-text-reveal-delay">
+            Master Your Free Fire Experience
+        </h3>
+        
+        <p class="text-slate-400 max-w-2xl mx-auto mb-12 text-lg transform translate-y-10 opacity-0 animate-text-reveal-delay2">
+            Precision settings optimized for professional gameplay. Experience the difference with our scientifically calibrated configurations.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-5 transform translate-y-10 opacity-0 animate-text-reveal-delay3">
+            <a href="#products" class="btn-primary group">
+                <span>View Product</span>
+                <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-300"></i>
+            </a>
+            <a href="#contact-us" class="btn-secondary group">
+                <span>Contact Us</span>
+                <i class="far fa-comment-dots ml-2 group-hover:scale-110 transition-transform duration-300"></i>
+            </a>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
+            <div class="text-sky-400/50 text-sm tracking-widest uppercase font-bold">Scroll to explore</div>
+            <div class="w-px h-10 bg-gradient-to-b from-sky-500 to-transparent mx-auto mt-2"></div>
+        </div>
+    </header>
+
+    <!-- Products Section -->
+    <section id="products" class="py-24 relative overflow-hidden">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-sky-500/5 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 text-center relative">
+            <div class="inline-block mb-4">
+                <span class="text-sky-500 font-bold uppercase text-xs tracking-[0.4em]">Premium Solutions</span>
+            </div>
+            <h2 class="text-white text-4xl md:text-5xl font-bold mb-12 uppercase transform translate-y-10 opacity-0 animate-on-scroll">
+                Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-400">Products</span>
+            </h2>
+            
+            <div class="mb-16 overflow-x-auto no-scrollbar flex justify-center">
+                <div class="capsule-nav inline-flex whitespace-nowrap">
+                    <button onclick="filterProducts('ANDROID')" id="tab-ANDROID" class="nav-item active">
+                        <i class="fab fa-android mr-2"></i> Android
+                    </button>
+                    <button onclick="filterProducts('IOS')" id="tab-IOS" class="nav-item">
+                        <i class="fab fa-apple mr-2"></i> iOS
+                    </button>
+                    <button onclick="filterProducts('PC')" id="tab-PC" class="nav-item">
+                        <i class="fas fa-desktop mr-2"></i> PC / Emulator
+                    </button>
+                </div>
+            </div>
+            
+            <div id="product-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 text-left"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-24 bg-gradient-to-b from-[#050a18]/50 to-[#020617] relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-sky-500 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <div class="inline-block mb-4">
+                    <span class="text-sky-500 font-bold uppercase text-xs tracking-[0.4em]">Why We're The Best</span>
+                </div>
+                <h2 class="text-white text-4xl md:text-5xl font-bold uppercase transform translate-y-10 opacity-0 animate-on-scroll">
+                    Why <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-400">Choose Us</span>
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-sky-500 to-blue-500 mx-auto mt-4 rounded-full transform scale-x-0 animate-scale-on-scroll"></div>
+            </div>
+            <div id="features-container" class="grid md:grid-cols-3 gap-8"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about-us" class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-sky-500/3 via-transparent to-blue-500/3"></div>
+        <div class="max-w-7xl mx-auto px-6 relative">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="relative group">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-sky-500/20 via-blue-500/20 to-cyan-500/20 rounded-[3rem] blur-2xl group-hover:blur-3xl transition-all duration-700"></div>
+                    <div class="relative rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl bg-[#0a0f1e] transform perspective-1000">
+                        <img src="./assets/qris.jpg" alt="About Xentrix" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-all duration-700 transform-gpu">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1e]/80 via-transparent to-transparent"></div>
+                    </div>
+                </div>
+                <div class="space-y-8">
+                    <div>
+                        <div class="inline-block mb-4">
+                            <span class="text-sky-500 font-bold uppercase text-xs tracking-[0.4em]">Our Story</span>
+                        </div>
+                        <h2 class="text-white text-4xl md:text-5xl font-bold uppercase mb-2 transform translate-x-[-20px] opacity-0 animate-on-scroll">
+                            About <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-400">XentrixSensi</span>
+                        </h2>
+                        <div class="w-20 h-1 bg-gradient-to-r from-sky-500 to-blue-500 rounded-full transform scale-x-0 animate-scale-on-scroll-delay"></div>
+                    </div>
+                    <p class="text-slate-400 leading-relaxed text-lg font-medium transform translate-y-5 opacity-0 animate-on-scroll">
+                        <span class="text-white font-bold">XentrixSensi</span> is a leading provider of Free Fire game settings optimization services, focusing on improving accuracy and gameplay comfort. We believe that every player has the potential to reach their full potential with the right configuration.
+                    </p>
+                    <div class="pl-6 border-l-4 border-gradient-to-b from-sky-500 to-blue-500 py-4 bg-gradient-to-r from-sky-500/5 to-transparent rounded-r-2xl transform translate-x-[-20px] opacity-0 animate-on-scroll-delay">
+                        <p class="text-white italic font-jakarta font-bold text-xl tracking-wide italic">"Skill is built, but precision is managed. Master your aim, master the game."</p>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div class="p-5 rounded-2xl bg-gradient-to-br from-[#0a0f1e] to-[#020617] border border-white/5 hover:border-sky-500/30 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-sky-500/10">
+                            <h4 class="text-sky-500 font-bold uppercase text-xs tracking-widest mb-2">our vision</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">Becoming the gold standard for professional players in finding their best sensitivity.</p>
+                        </div>
+                        <div class="p-5 rounded-2xl bg-gradient-to-br from-[#0a0f1e] to-[#020617] border border-white/5 hover:border-sky-500/30 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/10">
+                            <h4 class="text-sky-500 font-bold uppercase text-xs tracking-widest mb-2">our mission</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">Providing safe and legal premium technical support without the risk of being banned for the community.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="our-team" class="py-24 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-sky-500/5 rounded-full blur-3xl"></div>
+        <div class="max-w-7xl mx-auto px-6 relative">
+            <div class="text-center mb-16">
+                <div class="inline-block mb-4">
+                    <span class="text-sky-500 font-bold uppercase text-xs tracking-[0.4em]">The Experts</span>
+                </div>
+                <h2 class="text-white text-4xl md:text-5xl font-bold uppercase transform translate-y-10 opacity-0 animate-on-scroll">
+                    Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-400">Team</span>
+                </h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-sky-500 to-blue-500 mx-auto mt-4 rounded-full transform scale-x-0 animate-scale-on-scroll"></div>
+            </div>
+            <div id="team-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10"></div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact-us" class="py-24 bg-gradient-to-t from-[#050a18]/70 to-[#020617] relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 relative">
+            <div class="space-y-8">
+                <div class="inline-block mb-4">
+                    <span class="text-sky-500 font-bold uppercase text-xs tracking-[0.4em]">Get In Touch</span>
+                </div>
+                <h2 class="text-white text-4xl md:text-5xl font-bold uppercase transform translate-x-[-20px] opacity-0 animate-on-scroll">
+                    Contact <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-400">Us</span>
+                </h2>
+                
+                <div class="contact-card group transform hover:-translate-y-1 transition-all duration-300">
+                    <div class="contact-icon-wrapper bg-gradient-to-br from-green-500/10 to-emerald-500/10 text-green-500 group-hover:bg-gradient-to-br group-hover:from-green-500 group-hover:to-emerald-500 group-hover:text-white transition-all duration-300 shadow-lg">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-bold text-xl">WhatsApp Channel</h3>
+                        <a href="https://wa.me/628895823757" target="_blank" class="text-sky-500 text-sm font-bold tracking-widest group-hover:text-white transition-colors duration-300">JOIN CHANNEL →</a>
+                    </div>
+                </div>
+                
+                <div class="contact-card group transform hover:-translate-y-1 transition-all duration-300">
+                    <div class="contact-icon-wrapper bg-gradient-to-br from-indigo-500/10 to-purple-500/10 text-indigo-400 group-hover:bg-gradient-to-br group-hover:from-indigo-500 group-hover:to-purple-500 group-hover:text-white transition-all duration-300 shadow-lg">
+                        <i class="fab fa-discord"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-white font-bold text-xl">Discord Server</h3>
+                        <a href="https://discord.gg/xVAEBmqE" onclick="alert('Discord server coming soon!')" class="text-sky-500 text-sm font-bold tracking-widest group-hover:text-white transition-colors duration-300">JOIN SERVER →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-[#0a0f1e] to-[#020617] p-8 rounded-[2rem] border border-white/5 shadow-2xl transform hover:-translate-y-1 transition-all duration-300">
+                <h3 class="text-xl font-bold mb-6 text-white flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-sky-500/20 to-blue-500/20 flex items-center justify-center">
+                        <i class="fas fa-paper-plane text-sky-500"></i>
+                    </div>
+                    Send a message
+                </h3>
+                <div class="space-y-4">
+                    <input type="text" id="webhook-name" placeholder="Full Name" class="form-input" required>
+                    <input type="tel" id="webhook-phone" placeholder="WhatsApp Number (Example: 62889xxxxxx)" class="form-input" required>
+                    <textarea id="webhook-msg" placeholder="Tell us something..." rows="4" class="form-input" required></textarea>
+                    <button onclick="sendToDiscord()" id="webhook-btn" class="w-full bg-gradient-to-r from-sky-600 to-blue-600 py-4 rounded-xl font-black uppercase text-xs tracking-[0.2em] hover:from-sky-500 hover:to-blue-500 transition-all duration-300 shadow-lg shadow-sky-600/20 flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="fixed inset-0 z-[110] bg-black/95 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-gradient-to-br from-[#0a0f1e] to-[#020617] w-full max-w-md rounded-[2.5rem] border border-white/10 p-8 text-center relative shadow-2xl transform scale-95 transition-transform duration-300">
+            <button onclick="closePayment()" class="absolute top-6 right-6 text-slate-500 hover:text-white transition-all duration-300 hover:rotate-90">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <div class="w-16 h-16 rounded-full bg-gradient-to-r from-sky-500/20 to-blue-500/20 flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-qrcode text-sky-500 text-2xl"></i>
+            </div>
+            <h3 class="text-2xl font-extrabold mb-1 text-white uppercase tracking-tight">QRIS Payment</h3>
+            <p class="text-slate-400 text-[10px] mb-8 uppercase tracking-widest font-bold">Scan QR Code & Send Proof</p>
+            
+            <div class="bg-white p-4 rounded-2xl inline-block mb-8 shadow-2xl transform hover:scale-[1.02] transition-transform duration-300">
+                <img id="qris-img" src="" alt="QRIS" class="w-48 h-48 object-contain">
+            </div>
+            
+            <div class="bg-gradient-to-br from-[#020617] to-[#0a0f1e] p-5 rounded-2xl border border-white/5 mb-8 text-left space-y-2">
+                <div class="flex justify-between text-[10px] text-slate-500 font-black uppercase">
+                    <span>Product:</span><span id="pay-product" class="text-white"></span>
+                </div>
+                <div class="flex justify-between font-black text-xl text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-400 uppercase">
+                    <span>Total Bill:</span><span id="pay-amount"></span>
+                </div>
+            </div>
+            
+            <button onclick="confirmToWA()" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 py-4 rounded-xl font-black uppercase text-xs tracking-widest flex items-center justify-center gap-3 hover:from-green-500 hover:to-emerald-500 transition-all duration-300 shadow-lg shadow-green-600/20">
+                <i class="fab fa-whatsapp text-xl"></i> Send Proof of Payment
+            </button>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 z-50 w-12 h-12 bg-gradient-to-br from-sky-600 to-blue-600 rounded-full flex items-center justify-center text-white shadow-2xl shadow-sky-500/30 opacity-0 transition-all duration-300 hover:scale-110 hover:shadow-sky-500/50">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed top-24 right-6 z-[100] bg-gradient-to-r from-sky-600 to-blue-600 text-white px-6 py-4 rounded-xl shadow-2xl transform translate-x-full transition-transform duration-300">
+        <div class="flex items-center gap-3">
+            <i class="fas fa-check-circle text-xl"></i>
+            <span class="font-bold">Success!</span>
+        </div>
+        <p class="text-sm mt-1 opacity-90" id="toast-message"></p>
+    </div>
+
+    <footer class="py-12 text-center border-t border-white/5 bg-gradient-to-t from-[#0a0f1e] to-transparent">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-sky-500 to-blue-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt text-white text-sm"></i>
+                    </div>
+                    <span class="text-lg font-black italic tracking-tighter uppercase">XENTRIX<span class="text-sky-500">SENSI</span></span>
+                </div>
+                <div class="flex gap-6">
+                    <a href="#" onclick="scrollToSection('products')" class="text-slate-400 hover:text-sky-400 text-xs uppercase tracking-widest font-bold transition-colors duration-300">Products</a>
+                    <a href="#" onclick="scrollToSection('about-us')" class="text-slate-400 hover:text-sky-400 text-xs uppercase tracking-widest font-bold transition-colors duration-300">About</a>
+                    <a href="#" onclick="scrollToSection('contact-us')" class="text-slate-400 hover:text-sky-400 text-xs uppercase tracking-widest font-bold transition-colors duration-300">Contact</a>
+                </div>
+            </div>
+            <p class="text-slate-500 text-[10px] tracking-[0.4em] uppercase font-bold font-jakarta">&copy; 2026 XENTRIXSETTINGS. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
