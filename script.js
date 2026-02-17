@@ -14,33 +14,33 @@ const CONFIG = {
 const PRODUCTS = [
     { 
         id: 1, 
-        name: 'Xentrix Android VVIP', 
+        name: 'X-OPTIMIZER FLUXO', 
         cat: 'ANDROID', 
-        price: 45000, 
+        price: 20000, 
         img: 'assets/banner-ios.jpg',
-        features: ['Auto Headshot 85%', 'Anti-Lag Optimization', 'Fix Sensi No Licin', 'Support All Android'],
-        description: 'Premium settings optimized for Android devices with enhanced accuracy.',
-        bestseller: true
+        features: ['height performance device', 'Smooth Aim Assist', 'smoothes the screen', 'settings density and ppi', 'crosshairs', 'touch tools', 'Support All Android'],
+        description: 'Perfect for beginners starting their competitive journey.',
+        bestseller: false
     },
     { 
         id: 2, 
-        name: 'Xentrix Android Pro', 
+        name: 'X-OPTIMIZER EXONIC', 
         cat: 'ANDROID', 
-        price: 35000, 
+        price: 40000, 
         img: 'assets/banner-ios.jpg',
-        features: ['Auto Headshot 75%', 'Smooth Aim Assist', 'Stable FPS Config', 'Middle Range Support'],
+        features: ['height performance device', 'Smooth Aim Assist', 'smoothes the screen', 'settings density and ppi', 'crosshairs', 'touch tools', 'Support All Android'],
         description: 'Professional settings for intermediate players seeking improvement.',
         bestseller: false
     },
     { 
         id: 3, 
-        name: 'Xentrix Android Basic', 
+        name: 'X-OPTIMIZER PREMIUM', 
         cat: 'ANDROID', 
-        price: 25000, 
+        price: 65000, 
         img: 'assets/banner-ios.jpg',
-        features: ['Auto Headshot 60%', 'Basic Optimization', 'No Lag Settings', 'Beginner Friendly'],
-        description: 'Perfect for beginners starting their competitive journey.',
-        bestseller: false
+        features: ['Smoothes The Screen', 'Height Performance Device', 'Settings density and ppi', 'crosshairs', 'touch tools', 'Smooth Aim Assist', 'Support All Android'],
+        description: 'Premium settings optimized for Android devices with enhanced accuracy.',
+        bestseller: true
     },
     { 
         id: 4, 
@@ -54,23 +54,23 @@ const PRODUCTS = [
     },
     { 
         id: 5, 
-        name: 'Xentrix PC Elite', 
+        name: 'X-OPTIMIZER BASIC', 
         cat: 'PC', 
-        price: 85000, 
+        price: 25000, 
         img: 'assets/banner-pc.jpg',
-        features: ['Macro Script Support', 'Emulator Bypass', 'Mouse Raw Input', 'Stable 144 FPS'],
-        description: 'Elite PC configuration for maximum competitive edge.',
-        bestseller: true
+        features: ['Mouse Smooth', 'Optimization', 'Emulator Settings', 'Tweaks Aim'],
+        description: 'Basic PC settings for reliable performance.',
+        bestseller: false
     },
     { 
         id: 6, 
-        name: 'Xentrix PC Standard', 
+        name: 'X-OPTIMIZER v1', 
         cat: 'PC', 
-        price: 65000, 
+        price: 50000, 
         img: 'assets/banner-pc.jpg',
-        features: ['Basic Macro Support', 'Emulator Optimization', 'Mouse Fix', 'Stable 120 FPS'],
-        description: 'Standard PC settings for reliable performance.',
-        bestseller: false
+        features: ['Settings pack', 'Optimization pack', 'aim pack'],
+        description: 'Premium PC configuration for maximum competitive edge.',
+        bestseller: true
     },
 ];
 
@@ -83,7 +83,7 @@ const FEATURES = [
     },
     { 
         icon: 'crosshairs', 
-        title: 'Auto Headshot', 
+        title: 'Easy Headshot', 
         desc: 'Precision sensitivity settings for accurate shots with scientific calibration.',
         color: 'from-purple-500/20 to-pink-500/20'
     },
@@ -102,33 +102,11 @@ const TEAM = [
         img: 'assets/team-dev.jpg',
         socials: {
             whatsapp: '628895823757',
-            instagram: 'https://instagram.com/xentrixsensi',
+            instagram: 'https://instagram.com/dzixnidek',
             tiktok: 'https://tiktok.com/@xenzxsukamimisusu',
-            discord: 'https://discord.gg/xVAEBmqE'
+            discord: 'https://discord.gg/P6QdScE5mu'
         },
-        bio: 'Lead developer with 5+ years experience in game optimization.'
-    },
-    { 
-        name: 'Admin Sensi', 
-        role: 'Reseller & Support', 
-        img: 'assets/team-admin.jpg',
-        socials: {
-            whatsapp: '628895823757',
-            tiktok: 'https://tiktok.com/@admin_sensi',
-            discord: 'https://discord.gg/xVAEBmqE'
-        },
-        bio: 'Customer support specialist providing 24/7 assistance.'
-    },
-    { 
-        name: 'Tech Analyst', 
-        role: 'Quality Assurance', 
-        img: 'https://api.dicebear.com/7.x/avataaars/svg?seed=tech',
-        socials: {
-            whatsapp: '628895823757',
-            instagram: 'https://instagram.com/xentrixqa',
-            discord: 'https://discord.gg/xVAEBmqE'
-        },
-        bio: 'Ensuring all settings meet competitive standards and performance benchmarks.'
+        bio: ''
     }
 ];
 
@@ -730,7 +708,7 @@ async function sendToDiscord() {
     btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> SENDING...`;
 
     const embedData = {
-        username: "XENTRIXSENSI SUPPORT",
+        username: "X-OPTIMIZER SUPPORT",
         avatar_url: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
         embeds: [{
             title: "📩 New Support Message",
@@ -811,4 +789,5 @@ document.addEventListener('keydown', (e) => {
         e.preventDefault();
         // Focus search input
     }
+
 });
